@@ -21,7 +21,7 @@ namespace Application.Catalog.Products
         Task AddViewcount(int productId);
         Task<bool> UpdateStock(int productId, int addedQuantity);
 
-        Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
 
         Task<int> AddImages(int productId, List<IFormFile> files);
 
