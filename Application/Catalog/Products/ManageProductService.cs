@@ -1,6 +1,4 @@
-﻿using Application.Catalog.Products.Dtos;
-using Application.Catalog.Products.Dtos.Magane;
-using Application.Dtos;
+﻿
 using Data.EF;
 using Data.Entities;
 using System;
@@ -9,15 +7,28 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using ViewModels.Catalog.Product;
+using ViewModels.Common;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
+using System.IO;
+using Application.Common;
 
 namespace Application.Catalog.Products
 {
     public class ManageProductService : IManageProductService
     {
         private readonly ShopDBContext _context;
-        public ManageProductService(ShopDBContext context)
+        private readonly IStorageService _storageService;
+        public ManageProductService(ShopDBContext context, IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
+        }
+
+        public Task<int> AddImages(int productId, List<IFormFile> files)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task AddViewcount(int productId)
@@ -50,6 +61,23 @@ namespace Application.Catalog.Products
                     }
                 }
             };
+
+            //Save image
+            if (request.ThumbnailImage != null)
+            {
+                product.ProductImages = new List<ProductImage>()
+                {
+                    new ProductImage()
+                    {
+                        Caption = "Thumbnail image",
+                        DateCreated = DateTime.Now,
+                        FileSize = request.ThumbnailImage.Length,
+                        ImagePath = await this.SaveFile(request.ThumbnailImage),
+                        IsDefault = true,
+                        SortOrder = 1
+                    }
+                };
+            }
             _context.Products.Add(product);
             return await _context.SaveChangesAsync();
 
@@ -60,16 +88,17 @@ namespace Application.Catalog.Products
             var product = await _context.Products.FindAsync(productId);
             if (product == null) throw new ShopException($"Cannot find a product: {productId}");
 
+            var images = _context.ProductImages.Where(i => i.ProductId == productId);
+            foreach (var image in images)
+            {
+                await _storageService.DeleteFileAsync(image.ImagePath);
+            }
 
             _context.Products.Remove(product);
 
             return await _context.SaveChangesAsync();
         }
 
-        public Task<List<ProductViewModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
         {
@@ -118,6 +147,16 @@ namespace Application.Catalog.Products
             return pagedResult;
         }
 
+        public Task<List<ProductImageViewModel>> GetListImage(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> RemoveImages(int imageId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var prodcut = await _context.Products.FindAsync(request.Id);
@@ -134,7 +173,24 @@ namespace Application.Catalog.Products
             productTranslations.Description = request.Description;
             productTranslations.Details = request.Details;
 
+            //Save image
+            if (request.ThumbnailImage != null)
+            {
+                var thumbnailImage = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefault == true && i.ProductId == request.Id);
+                if (thumbnailImage != null)
+                {
+                    thumbnailImage.FileSize = request.ThumbnailImage.Length;
+                    thumbnailImage.ImagePath = await this.SaveFile(request.ThumbnailImage);
+                    _context.ProductImages.Update(thumbnailImage);
+                }
+            }
+
             return await _context.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
@@ -153,5 +209,12 @@ namespace Application.Catalog.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
+        }
     }
 }
