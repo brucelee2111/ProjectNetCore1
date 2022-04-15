@@ -1,6 +1,4 @@
-﻿using Application.Catalog.Products.Dtos;
-using Application.Catalog.Products.Dtos.Public;
-using Application.Dtos;
+﻿
 using Data.EF;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using ViewModels.Catalog.Product;
+using ViewModels.Common;
 
 namespace Application.Catalog.Products
 {
@@ -47,7 +47,7 @@ namespace Application.Catalog.Products
 
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request)
         {
             //1. Select join
             var query = from p in _context.Products

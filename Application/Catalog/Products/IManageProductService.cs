@@ -1,10 +1,11 @@
-﻿using Application.Catalog.Products.Dtos;
-using Application.Catalog.Products.Dtos.Magane;
-using Application.Dtos;
+﻿
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels.Catalog.Product;
+using ViewModels.Common;
 
 namespace Application.Catalog.Products
 {
@@ -20,9 +21,15 @@ namespace Application.Catalog.Products
         Task AddViewcount(int productId);
         Task<bool> UpdateStock(int productId, int addedQuantity);
 
-        Task<List<ProductViewModel>> GetAll();
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
 
+        Task<int> AddImages(int productId, List<IFormFile> files);
+
+        Task<int> RemoveImages(int imageId);
+
+        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+
+        Task<List<ProductImageViewModel>> GetListImage(int productId);
 
     }
 }

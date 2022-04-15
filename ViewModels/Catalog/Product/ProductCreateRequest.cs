@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Catalog.Products.Dtos.Magane
+namespace ViewModels.Catalog.Product
 {
     public class ProductCreateRequest
     {
@@ -17,6 +18,8 @@ namespace Application.Catalog.Products.Dtos.Magane
 
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
+
+        public IFormFile ThumbnailImage { get; set; }
 
     }
 }

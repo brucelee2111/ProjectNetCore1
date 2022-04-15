@@ -1,9 +1,9 @@
-﻿using Application.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ViewModels.Common;
 
-namespace Application.Catalog.Products.Dtos.Magane
+namespace ViewModels.Catalog.Product
 {
     public class GetProductPagingRequest : PagingRequestBase
     {
