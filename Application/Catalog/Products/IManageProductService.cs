@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Catalog.Product;
+using ViewModels.Catalog.ProductImages;
 using ViewModels.Common;
 
 namespace Application.Catalog.Products
@@ -23,13 +24,18 @@ namespace Application.Catalog.Products
 
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
 
-        Task<int> AddImages(int productId, List<IFormFile> files);
+        Task<ProductViewModel> GetById(int productId, string languageId);
 
-        Task<int> RemoveImages(int imageId);
 
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
 
-        Task<List<ProductImageViewModel>> GetListImage(int productId);
+        Task<int> RemoveImage(int imageId);
+
+        Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
+
+        Task<ProductImageViewModel> GetImageById(int imageId);
+        Task<List<ProductImageViewModel>> GetListImages(int productId);
+
 
     }
 }
