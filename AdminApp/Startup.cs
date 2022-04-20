@@ -32,7 +32,7 @@ namespace AdminApp
                 .AddCookie(
                 options =>
                 {
-                    options.LoginPath = "/User/Login/";
+                    options.LoginPath = "/Login/Index";
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
 
@@ -44,6 +44,16 @@ namespace AdminApp
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
             services.AddTransient<IUserApiClient, UserApiClient>();
+
+            IMvcBuilder builder = services.AddRazorPages();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+#if DEBUG
+            if (environment == Environments.Development)
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
