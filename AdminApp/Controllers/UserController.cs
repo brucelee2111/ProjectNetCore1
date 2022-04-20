@@ -1,4 +1,8 @@
 ﻿using AdminApp.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
@@ -14,6 +18,7 @@ using ViewModels.System.Users;
 
 namespace AdminApp.Controllers
 {
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserApiClient _userApiClient;
@@ -31,8 +36,9 @@ namespace AdminApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
 
@@ -45,7 +51,26 @@ namespace AdminApp.Controllers
             }
             var token = await _userApiClient.Authenticate(request);
 
-            return View(token);
+            var userPrincipal = this.ValidateToken(token);
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                IsPersistent = false
+            };
+
+            await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        userPrincipal,
+                        authProperties);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "User");
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
