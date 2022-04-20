@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +9,7 @@ using ViewModels.Common;
 
 namespace Application.Catalog.Products
 {
-    public interface IManageProductService
+    public interface IProductService
     {
         Task<int> Create(ProductCreateRequest request);
 
@@ -19,13 +18,14 @@ namespace Application.Catalog.Products
         Task<int> Delete(int productId);
 
         Task<bool> UpdatePrice(int productId, decimal newPrice);
+
         Task AddViewcount(int productId);
+
         Task<bool> UpdateStock(int productId, int addedQuantity);
 
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
 
         Task<ProductViewModel> GetById(int productId, string languageId);
-
 
         Task<int> AddImage(int productId, ProductImageCreateRequest request);
 
@@ -34,8 +34,9 @@ namespace Application.Catalog.Products
         Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
 
         Task<ProductImageViewModel> GetImageById(int imageId);
+
         Task<List<ProductImageViewModel>> GetListImages(int productId);
 
-
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
     }
 }
