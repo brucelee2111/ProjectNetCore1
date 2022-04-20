@@ -77,7 +77,8 @@ namespace Application.System.Users
                 FirstName = user.FirstName,
                 Dob = user.Dob,
                 Id = user.Id,
-                LastName = user.LastName
+                LastName = user.LastName,
+                UserName = user.UserName
             };
             return new ApiSuccessResult<UserViewModel>(userVm);
         }
@@ -109,7 +110,9 @@ namespace Application.System.Users
             //4. Select and projection
             var pagedResult = new PagedResult<UserViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 Items = data
             };
             return new ApiSuccessResult<PagedResult<UserViewModel>>(pagedResult);
