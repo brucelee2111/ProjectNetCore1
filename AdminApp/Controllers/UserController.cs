@@ -19,6 +19,7 @@ using ViewModels.System.Users;
 namespace AdminApp.Controllers
 {
     //[Authorize]
+
     public class UserController : Controller
     {
         private readonly IUserApiClient _userApiClient;
@@ -30,9 +31,18 @@ namespace AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            var sessions = HttpContext.Session.GetString("Token");
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = sessions,
+                Keyword = keyword,
+                pageIndex = pageIndex,
+                pageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+            return View(data);
         }
 
         [HttpGet]
@@ -58,6 +68,7 @@ namespace AdminApp.Controllers
                 IsPersistent = false
             };
 
+            HttpContext.Session.SetString("Token", token);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
@@ -70,6 +81,7 @@ namespace AdminApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
 
