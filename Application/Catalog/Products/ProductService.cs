@@ -136,7 +136,9 @@ namespace Application.Catalog.Products
             //4. Select and projection
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageSize = request.pageSize,
+                PageIndex = request.pageIndex,
                 Items = data
             };
             return pagedResult;
@@ -342,7 +344,9 @@ namespace Application.Catalog.Products
             //4. Select and projection
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageSize = request.pageSize,
+                PageIndex = request.pageIndex,
                 Items = data
             };
             return pagedResult;
