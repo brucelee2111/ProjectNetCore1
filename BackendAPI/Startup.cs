@@ -1,5 +1,6 @@
 using Application.Catalog.Products;
 using Application.Common;
+using Application.System.Roles;
 using Application.System.Users;
 using Data.EF;
 using Data.Entities;
@@ -53,6 +54,7 @@ namespace BackendAPI
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
