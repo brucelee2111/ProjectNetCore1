@@ -11,6 +11,7 @@ using ViewModels.Catalog.ProductImages;
 
 namespace BackendAPI.Controllers
 {
+    //api/products
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -18,28 +19,19 @@ namespace BackendAPI.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(
+            IProductService productService)
         {
             _productService = productService;
         }
 
-        ////http://localhost:port/product
-        //[HttpGet("{languageId}")]
-        //public async Task<IActionResult> Get(string languageId)
-        //{
-        //    var products = await _publicProductService.GetAll(languageId);
-        //    return Ok(products);
-        //}
-
-        //http://localhost:port/products?pageIndex=1&&pageSize=10&&CategoryId=1
-        [HttpGet("{languageId}")]
-        public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery] GetPublicProductPagingRequest request)
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
-            var products = await _productService.GetAllByCategoryId(languageId, request);
+            var products = await _productService.GetAllPaging(request);
             return Ok(products);
         }
 
-        //http://localhost:port/products/1/vi-VN
         [HttpGet("{productId}/{languageId}")]
         public async Task<IActionResult> GetById(int productId, string languageId)
         {
@@ -98,15 +90,6 @@ namespace BackendAPI.Controllers
         }
 
         //Images
-        [HttpGet("{productId}/images/{imageId}")]
-        public async Task<IActionResult> GetImageById(int productId, int imageId)
-        {
-            var image = await _productService.GetImageById(imageId);
-            if (image == null)
-                return BadRequest("Cannot find product");
-            return Ok(image);
-        }
-
         [HttpPost("{productId}/images")]
         public async Task<IActionResult> CreateImage(int productId, [FromForm] ProductImageCreateRequest request)
         {
@@ -149,6 +132,15 @@ namespace BackendAPI.Controllers
                 return BadRequest();
 
             return Ok();
+        }
+
+        [HttpGet("{productId}/images/{imageId}")]
+        public async Task<IActionResult> GetImageById(int productId, int imageId)
+        {
+            var image = await _productService.GetImageById(imageId);
+            if (image == null)
+                return BadRequest("Cannot find product");
+            return Ok(image);
         }
     }
 }
