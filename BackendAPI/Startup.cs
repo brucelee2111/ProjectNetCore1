@@ -1,3 +1,4 @@
+using Application.Catalog.Categories;
 using Application.Catalog.Products;
 using Application.Common;
 using Application.System.Languages;
@@ -50,6 +51,7 @@ namespace BackendAPI
             services.AddTransient<IStorageService, FileStorageService>();
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
