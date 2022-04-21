@@ -40,6 +40,7 @@ namespace AdminApp.Controllers
                 pageSize = pageSize
             };
             var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.Keyword = keyword;
             return View(data.ResultObj);
         }
 
@@ -68,7 +69,7 @@ namespace AdminApp.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet]
