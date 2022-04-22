@@ -4,6 +4,7 @@ using Application.Common;
 using Application.System.Languages;
 using Application.System.Roles;
 using Application.System.Users;
+using Application.Utilities.Slides;
 using Data.EF;
 using Data.Entities;
 using FluentValidation.AspNetCore;
@@ -57,6 +58,9 @@ namespace BackendAPI
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<ILanguageService, LanguageService>();
+
+            services.AddTransient<ISlideService, SlideService>();
+
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
 
