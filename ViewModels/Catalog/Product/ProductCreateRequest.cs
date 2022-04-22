@@ -24,5 +24,6 @@ namespace ViewModels.Catalog.Product
         public string LanguageId { set; get; }
 
         public IFormFile ThumbnailImage { get; set; }
+        public bool? IsFeatured { get; set; }
     }
 }
