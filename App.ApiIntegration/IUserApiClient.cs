@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ViewModels.Common;
 using ViewModels.System.Users;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public interface IUserApiClient
     {

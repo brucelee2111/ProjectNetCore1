@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ViewModels.Catalog.Product;
 using ViewModels.Common;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public interface IProductApiClient
     {

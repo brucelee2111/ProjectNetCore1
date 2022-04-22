@@ -1,4 +1,4 @@
-﻿using AdminApp.Services;
+﻿using App.ApiIntegration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;

@@ -9,7 +9,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Utilities.Constants;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public class BaseApiClient
     {
