@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ViewModels.Catalog.Categories;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public class CategoryApiClient : BaseApiClient, ICategoryApiClient
     {

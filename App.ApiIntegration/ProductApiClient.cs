@@ -13,7 +13,7 @@ using Utilities.Constants;
 using ViewModels.Catalog.Product;
 using ViewModels.Common;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {

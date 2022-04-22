@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ViewModels.Common;
 using ViewModels.System.Languages;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public interface ILanguageApiClient
     {

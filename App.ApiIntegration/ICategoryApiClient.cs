@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModels.Catalog.Categories;
 
-namespace AdminApp.Services
+namespace App.ApiIntegration
 {
     public interface ICategoryApiClient
     {

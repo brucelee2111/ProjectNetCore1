@@ -1,4 +1,4 @@
-using AdminApp.Services;
+using App.ApiIntegration;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
